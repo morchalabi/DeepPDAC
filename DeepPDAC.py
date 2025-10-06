@@ -69,14 +69,16 @@ def load_examples(min_features = 200, max_features = float('inf'), max_percent_m
 # Y: 1 x m numpy array
 # W: n x 1 numpy array (n is number of features)
 # b = 0
-def train(min_features = 200, max_features = float('inf'), max_percent_mt = 10, alpha_ = 0.005, num_iterations = 2000, print_cost = True):
+def train(min_features = 200, max_features = float('inf'), max_percent_mt = 10, alpha_ = 0.5, num_iterations = 2000, print_cost = True):
   
   # load examples
   
-  objects_ = np.load('data/train/examples_labels.npz')      # temporary
-  X_ = objects_['exmp_vects']                               # temporary
-  Y_ = objects_['exmp_labs']                                # temporary
-  # X_, Y_ = load_examples(min_features = 200, max_features = float('inf'), max_percent_mt = 10)
+  if not os.path.exists('data/train/examples_labels.npz'):
+    X_, Y_ = load_examples(min_features = min_features, max_features = max_features, max_percent_mt = max_percent_mt)
+  else:
+    objects_ = np.load('data/train/examples_labels.npz')
+    X_ = objects_['exmp_vects']
+    Y_ = objects_['exmp_labs']
   
   # training
   
@@ -95,7 +97,6 @@ def train(min_features = 200, max_features = float('inf'), max_percent_mt = 10, 
     L_ = (Y_*np.log(Y_hat) + (1-Y_)*np.log(1 - Y_hat))      # binary cross-entropy loss (aka log loss or negative log likelihood)
     J_ = (-1/m_) * np.sum(L_)                               # cost function
     
-      
     # backward probagation
     
     nabla_L_Z = (Y_hat - Y_).T                    # derivative of loss w.r.t Z; shape: m x 1
@@ -113,6 +114,15 @@ def train(min_features = 200, max_features = float('inf'), max_percent_mt = 10, 
       Js_.append(J_)      # appending cost to costs list
       print('cost at iteration %i is: %.5f' % (i_, J_))
 
+  # performance of model on training set
+
+  Z_ = np.dot(W_.T,X_) + b_                     # linear function with learned W and b
+  Y_hat = scipy.special.expit(Z_)               # sigmoid activation function
+  Y_hat[Y_hat < 0.5] = 0
+  Y_hat[0.5 <= Y_hat] = 1
+  rslt_ = np.mean(Y_ == Y_hat.astype(int))      # elementwise "and"
+  print('Accuracy on training set is: %.2f%%\n' % (rslt_*100))
+
   return W_, b_, np.array(Js_)
 
 # Predict method
@@ -123,21 +133,21 @@ def predict(mat_ = None, features_ = None, barcodes_ = None, label_ = None, exam
   
   # forward propagation
   
-  y_ = label_                         # true labels if available
+  y_ = label_                         # true label
   z_ = np.dot(W_.T,x_) + b_           # linear function
   y_hat = scipy.special.expit(z_)     # sigmoid activation function
   
   # converting probabilities to class labels
   
-  y_hat[0,0] = 1 if(0.5 <= y_hat) else 0      # flattening Y_hat to convert to list and reshaping back to 1 by m array
+  class_ = 'liver' if(0.5 <= y_hat) else 'non-liver site'
   
-  return y_hat
+  return y_hat, class_
+
 
 # Main body
 
 if __name__ == "__main__":
-  
-  W_, b_, costs_ = train(alpha_ = 0.5)      # calling train function to get learned parameters
-  y_hat = predict(mat_ = 'data/train/PN1_matrix.mtx', features_ = 'data/train/PN1_features.tsv', barcodes_ = 'data/train/PN1_barcodes.tsv', label_ = 'liver', example_name = 'PN1', W_ = W_, b_ = b_)
-  print('prediction is:', y_hat[0,0])
 
+  W_, b_, costs_ = train(alpha_ = 0.5)      # calling train function to get learned parameters
+  prob_, class_ = predict(mat_ = 'data/train/PN1_matrix.mtx', features_ = 'data/train/PN1_features.tsv', barcodes_ = 'data/train/PN1_barcodes.tsv', label_ = 'liver', example_name = 'PN1', W_ = W_, b_ = b_)
+  print("Probability of liver recurence is %.2f%%. Therefore, the sample may recur in %s" % (prob_[0,0], class_))
