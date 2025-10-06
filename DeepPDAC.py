@@ -120,7 +120,7 @@ def train(min_features = 200, max_features = float('inf'), max_percent_mt = 10, 
   Y_hat = scipy.special.expit(Z_)               # sigmoid activation function
   Y_hat[Y_hat < 0.5] = 0
   Y_hat[0.5 <= Y_hat] = 1
-  rslt_ = np.mean(Y_ == Y_hat.astype(int))      # elementwise "and"
+  rslt_ = np.mean(Y_ == Y_hat.astype(int))      # elementwise XNOR and mean to get accuracy
   print('Accuracy on training set is: %.2f%%\n' % (rslt_*100))
 
   return W_, b_, np.array(Js_)
