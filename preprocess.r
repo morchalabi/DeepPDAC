@@ -1,3 +1,9 @@
+# ============================================================
+# Author: Dr. Mori (Morteza) Chalabi
+# Created: October 2025
+# Description: Deep learning model trained on PDAC TME (LIV-MR signature)
+# ============================================================
+
 require(Seurat)
 require(DoubletFinder)
 require(ggplot2)

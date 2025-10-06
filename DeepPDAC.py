@@ -1,6 +1,10 @@
-# Author: Mori (Morteza) Chalabi
+# ============================================================
+# Author: Dr. Mori (Morteza) Chalabi
+# Created: October 2025
+# Description: Deep learning model trained on PDAC TME (LIV-MR signature)
+# ============================================================
 
-# Importing libraries ####  ------------------------------------------------------------------------------------------
+# Importing libraries
 
 import fnmatch                                  # lisiting files with specific patterns as in list.files in R
 import os
@@ -17,8 +21,6 @@ from rpy2.robjects.packages import importr      # for being able to import R pac
 
 r.source("preprocess.R")                      # loads R script
 r_preprocess = ro.globalenv['preprocess']     # handle to preprocess() function
-
-# ____________________________________________________________________________
 
 # Preprocessing method
 def load_examples(min_features = 200, max_features = float('inf'), max_percent_mt = 10):
@@ -131,6 +133,7 @@ def predict(mat_ = None, features_ = None, barcodes_ = None, label_ = None, exam
   
   return y_hat
 
+# Main body ####
 
 if __name__ == "__main__":
   
