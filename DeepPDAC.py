@@ -94,7 +94,7 @@ def train(min_features = 200, max_features = float('inf'), max_percent_mt = 10, 
     
     Z_ = np.dot(W_.T,X_) + b_                               # linear function
     Y_hat = scipy.special.expit(Z_)                         # sigmoid activation function: 1/(1 + e^-z)
-    L_ = (Y_*np.log(Y_hat) + (1-Y_)*np.log(1 - Y_hat))      # binary cross-entropy loss (aka log loss or negative log likelihood)
+    L_ = (Y_*np.log(Y_hat) + (1-Y_)*np.log(1 - Y_hat))      # binary cross-entropy loss (aka log loss or log likelihood)
     J_ = (-1/m_) * np.sum(L_)                               # cost function
     
     # backward probagation
