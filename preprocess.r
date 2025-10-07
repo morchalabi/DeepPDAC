@@ -228,12 +228,3 @@ preprocess = function(mat_ = NULL, features_ = NULL, barcodes_ = NULL, sample_ =
   return(t(loadings_))
 }
 
-## Reading in data ####
-
-# data_ = suppressWarnings(Read10X_h5(filename = '../data/lung/PN14/filtered_feature_bc_matrix_Cellbender_filtered.h5'))# PN14
-# sample_ = 'sample'; DOUBLETS = NULL; min_features = 200; max_features = Inf; max_percent_mt = 10
-
-# s_obj = suppressWarnings(Read10X_h5(filename = '../data/lung/PN14/filtered_feature_bc_matrix_Cellbender_filtered.h5'))# PN14
-# loadings_ = preprocess(data_ = s_obj, sample_ = 'PN14')
-# write.table(x = t(loadings_), file = 'PN14_loadings.txt', sep = '\t', quote = F, row.names = T, col.names = F)
-
