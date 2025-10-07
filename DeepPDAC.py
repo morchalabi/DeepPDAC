@@ -48,14 +48,14 @@ def load_examples(min_features = 200, max_features = float('inf'), max_percent_m
     # updating lists
 
     exmp_vect = np.array(exmp_vect)         # convert to numpy array (must be 1 x n)
-    exmp_vects.append(exmp_vect)                   # updating train list
+    exmp_vects.append(exmp_vect)            # updating train list
 
     exmp_labs.append(labels_.loc[s_,1])     # updating train labels list
 
   # stack into (m, n) array
 
-  exmp_vects = np.hstack(exmp_vects)                # hstack to get n by m array to comply with deep learning libraries
-  exmp_labs = np.array(exmp_labs).reshape(1, len(examples_))     # conversion to 1 by m numpy array
+  exmp_vects = np.hstack(exmp_vects)                              # hstack to get n by m array to comply with deep learning libraries
+  exmp_labs = np.array(exmp_labs).reshape(1, len(examples_))      # conversion to 1 by m numpy array
 
   # saving as numpy array
 
@@ -121,7 +121,7 @@ def train(min_features = 200, max_features = float('inf'), max_percent_mt = 10, 
   Y_hat[Y_hat < 0.5] = 0
   Y_hat[0.5 <= Y_hat] = 1
   rslt_ = np.mean(Y_ == Y_hat.astype(int))      # elementwise XNOR and mean to get accuracy
-  print('Accuracy on training set is: %.2f%%\n' % (rslt_*100))
+  print('\n[ Accuracy on training set is: %.2f%% ]\n' % (rslt_*100))
 
   return W_, b_, np.array(Js_)
 
@@ -149,5 +149,5 @@ def predict(mat_ = None, features_ = None, barcodes_ = None, label_ = None, exam
 if __name__ == "__main__":
 
   W_, b_, costs_ = train(alpha_ = 0.5)      # calling train function to get learned parameters
-  prob_, class_ = predict(mat_ = 'data/train/PN1_matrix.mtx', features_ = 'data/train/PN1_features.tsv', barcodes_ = 'data/train/PN1_barcodes.tsv', label_ = 'liver', example_name = 'PN1', W_ = W_, b_ = b_)
-  print("Probability of liver recurence is %.2f%%. Therefore, the sample may recur in %s" % (prob_[0,0], class_))
+  prob_, class_ = predict(mat_ = 'data/train/PN13_matrix.mtx', features_ = 'data/train/PN13_features.tsv', barcodes_ = 'data/train/PN13_barcodes.tsv', label_ = 'liver', example_name = 'PN13', W_ = W_, b_ = b_)
+  print("\n[ Probability of liver recurence is %.2f%%. Therefore, the sample may recur in %s ]\n" % (prob_[0,0], class_))
