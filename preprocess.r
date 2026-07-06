@@ -25,7 +25,7 @@ doubletIndentify = function(s_)
 {
   # pK Identification (ground-truth ####
   
-  sweep.res.list = paramSweep(seu = s_, PCs = 1:30, sct = FALSE, num.cores = 3)     # steps 1-3: trying different pN and pK
+  sweep.res.list = paramSweep(seu = s_, PCs = 1:30, sct = FALSE, num.cores = 1)     # steps 1-3: trying different pN and pK
   sweep.stats = summarizeSweep(sweep.res.list, GT = FALSE)                          # computes BCmvn (Mean-variance normalized bimodality coefficient) needed to find optimal pK
   bcmvn_ = find.pK(sweep.stats)                                                     # step 3: finds optimal pK
   pk_ = as.numeric(as.character(bcmvn_$pK[which.max(bcmvn_$BCmetric)]))
